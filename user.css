@@ -1,13 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway|Varela+Round|Coda);
-/*@import url(http://weloveiconfonts.com/api/?family=entypo);*/
+@import url(https://cdnjs.cloudflare.com/ajax/libs/entypo/2.0/entypo.ttf);
 
 [class*="entypo-"]:before {
   font-family: 'entypo', sans-serif;
 }
 
-@font-face {
-  font-family: 'entypo';
-}
 body {
   background: #fffcdd;
   padding: 2.23em;
