@@ -3,10 +3,37 @@
   <head>
     <meta charset="utf-8">
     <title>tes</title>
-    <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="user.css">
   </head>
   <body>
-    <div class="instagram" data-userid="189242245" data-limit="12">ig feed</div>
+
+<div id="user" ></div>
+    <!-- <h1 class="title-pen"> User Profile <span>UI</span></h1> -->
+    <div class="user-profile">
+      <div class="avatar">
+      <!-- <img class="avatar" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTF_erFD1SeUnxEpvFjzBCCDxLvf-wlh9ZuPMqi02qGnyyBtPWdE-3KoH3s" alt="Ash" /> -->
+      </div>
+
+        <div class="username"></div>
+      <div class="bio">
+
+      </div>
+        <div class="description">
+      </div>
+      <ul class="data">
+
+     </ul>
+    </div>
+      <footer>
+        <h1>
+      <!-- <a href="https://dribbble.com/shots/1033074-User-Profile"> -->
+      <!-- <span class="entypo-dribbble"></span> -->
+        </h1>
+      </footer>
+
+    <div class="instagram" data-userid="1341955712" data-limit="20">ig feed</div>
+
 
     <div class="igviewer hidden"><img src=""></div>
 
@@ -14,7 +41,7 @@
     <script type="text/javascript">
     var ig = {};
       // !!! USE YOUR OWN TOKEN
-      ig.token = '189242245.e4579bd.785b15a243fe4d87918dc5982b136bbd';
+      ig.token = '1341955712.7b4f158.c61b8caecce64199bde9a2bbbda982b0';
 
       ig.init = function() {
       $('.instagram').each(function(i) {
@@ -23,6 +50,7 @@
         args.userid = args.container.data('userid');
         args.limit = args.container.data('limit');
         args.feedurl = 'https://api.instagram.com/v1/users/'+args.userid+'/media/recent/?access_token='+ig.token+'&count='+args.limit+'&callback=?';
+        args.user = 'https://api.instagram.com/v1/users/self/?access_token='+ig.token+'&callback=?';
         args.html = '';
         // PASS ARGS TO QUERY
         ig.query(args);
@@ -30,8 +58,31 @@
       }
 
       ig.query = function(args) {
+
+        $.getJSON(args.user, {}, function(user) {
+          $('<p>'+user.data.username+'</p>').appendTo('.username');
+          $('<img class="avatar" src="'+user.data.profile_picture+'" alt="Ash" />').appendTo('.avatar');
+          $('<p>"'+user.data.bio+'"</p>').appendTo('.bio');
+          $('<p>"'+user.data.website+'"</p>').appendTo('.description');
+          // $('<p>'+user.data.counts.media+'</p>').appendTo('.entypo-doc');
+          // $('<p>'+user.data.counts.follows+'</p>').appendTo('.entypo-link');
+          // $('<p>'+user.data.counts.followed_by+'</p>').appendTo('.entypo-heart');
+          $(' <li>'+
+              '<span class="entypo-doc"> '+user.data.counts.media+' </span>'+
+          '</li>'+
+          '<li>'+
+            '<span class="entypo-heart"> '+user.data.counts.followed_by+'</span>'+
+          '</li>'+
+          '<li>'+
+            '<span class="entypo-link"> '+user.data.counts.follows+' </span>'+
+          '</li>').appendTo('.data');
+
+          // console.log(user.data);
+        });
+
       $.getJSON(args.feedurl, {}, function(data) {
         // PASS QUERY DATA TO BUILDER
+        // console.log(data);
         ig.build(data, args);
       });
       }
@@ -40,7 +91,7 @@
       ig.build = function(data, args) {
 
       $.each(data.data,function (i,item) {
-        console.log(item);
+        // console.log(item);
         if (item.caption) var caption = item.caption.text;
         var thumb = item.images.low_resolution.url;
         var img = item.images.standard_resolution.url;
